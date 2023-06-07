@@ -218,11 +218,9 @@
         - name: Save ansible vars to user_info data
           agnosticd_user_info:
             data:
-              rosa_sandbox_account_id: "{{ sandbox_account_id }}"
               rosa_console_user_name: "{{ hostvars.localhost.rosa_console_user_name }}"
               rosa_console_password: "{{ hostvars.localhost.rosa_console_password }}"
               rosa_bastion_user_name: "{{ bastion_user_name }}"
-              rosa_subdomain_base: "{{ subdomain_base }}"
               rosa_user_password: "{{ rosa_user_password }}"
               rosa_console_url: "{{ rosa_console_url.stdout }}"
               rosa_admin_password: "{{ rosa_admin_result.stdout }}"
@@ -234,16 +232,10 @@
 
               *NOTE:* With great power comes great responsibility. We monitor usage.
 
-              == AWS web console access:
-              * URL: https://{{ sandbox_account_id }}.signin.aws.amazon.com/console
-              * User: {{ hostvars.localhost.rosa_console_user_name }}
-              * Password: {{ hostvars.localhost.rosa_console_password }}
-
               *IMPORTANT:* Please be very careful to not expose AWS credentials in GIT repos or anywhere else that could be public!
               If your credentials are compromised, your environment will be deleted without warning.
 
               == Bastion SSH access:
-              * ssh {{ bastion_user_name }}@bastion.{{ subdomain_base }}
               * Password: {{ rosa_user_password }}
               * Your AWS credentials are preconfigured in `~/.aws/credentials` on the bastion host.
               * The ROSA CLI is preinstalled on the bastion host in `/usr/local/bin`. There is no need to use root.
