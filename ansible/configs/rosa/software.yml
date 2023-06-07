@@ -232,14 +232,6 @@
 
               *NOTE:* With great power comes great responsibility. We monitor usage.
 
-              *IMPORTANT:* Please be very careful to not expose AWS credentials in GIT repos or anywhere else that could be public!
-              If your credentials are compromised, your environment will be deleted without warning.
-
-              == Bastion SSH access:
-              * Password: {{ rosa_user_password }}
-              * Your AWS credentials are preconfigured in `~/.aws/credentials` on the bastion host.
-              * The ROSA CLI is preinstalled on the bastion host in `/usr/local/bin`. There is no need to use root.
-
               == OpenShift console access:
               * URL: {{ rosa_console_url.stdout }}
               * User: cluster-admin
