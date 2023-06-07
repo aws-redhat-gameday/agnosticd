@@ -16,13 +16,39 @@ The following config includes:
 
 == AWS Prereqs for ROSA
 
-Please see https://docs.openshift.com/rosa/rosa_getting_started/rosa-aws-prereqs.html for a list of pre-reqs for the target AWS account.
+- Please see https://docs.openshift.com/rosa/rosa_getting_started/rosa-aws-prereqs.html for a list of pre-reqs for the target AWS account.
+- An AWS EC2 key pair created via the EC2 Console or AWS CLI named `rosa_key` and of type RSA + PEM. This key is to access the EC2 bastion host where the ROSA deployment is initiated. After downloading it, run `chmod 400 rosa_key.pem` and store it in your `~/.ssh` folder.
+- On your deployment environment, you will need the following Ansible collections:
+
+```bash
+ansible-galaxy collection install community.crypto
+ansible-galaxy collection install ansible.posix
+ansible-galaxy collection install amazon.aws
+ansible-galaxy collection install community.aws
+```
+
+== Configuration
+
+In a new file `custom_vars.yml` , configure the following parameters:
+
+- define a `cloud_provider: ec2`
+- define an email `email: <your-email>`. The email is required as metadata for the generated CloudFormation templates
+- update the default GUID `guid: ...`. It will be used as a suffix for all resources created including the ROSA cluster name. Length cannot exceed 10 characters.
+- define AWS region `aws_region: <aws-regiond-id`
 
 == Secrets
 
-You will need to define the `rosa_token` variable in order to deploy this config.  Add this variable to your secret file.
+In a new file `secrets.yml`, 
 
-This token can be created and downloaded from https://cloud.redhat.com/openshift/token/rosa
+- add a password for the following configuration `bastion_user_password`
+- add your ROSA token for the following configuration `rosa_token` (from <https://console.redhat.com/openshift/token/rosa>)
+- provide an AWS IAM access key ID and secret used for the ROSA cluster deployment: 
+
+```yaml
+aws_access_key_id: <my-aws_access_key_id>
+aws_secret_access_key: <my-aws_secret_access_key>
+```
+
 
 It should look like:
 
@@ -37,7 +63,9 @@ rosa_token: "eyJ<..REDACTED..>dz8"
 
 You can create yaml files of your desired configs and secrets and execute them:
 
-`ansible-playbook ansible/main.yaml -e @myenvironment-variables.yml  -e@my-secrets.yml`
+```
+ansible-playbook ansible/main.yml -e @ansible/configs/rosa/custom_vars.yml -e @ansible/configs/rosa/secrets.yml -vv -e ansible_python_interpreter=/usr/bin/python3 -i localhost, -c local
+```
 
 === To Delete an environment
 

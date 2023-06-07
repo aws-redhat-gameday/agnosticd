@@ -13,6 +13,6 @@
   aws_caller_info:
   register: _caller_info
 
-- name: Set  account ID
+- name: Set Route53 fact 
   set_fact:
-    sandbox_account_id: "{{ _caller_info.account }}"
+    skip_route53: "{{skip_route53}}"
