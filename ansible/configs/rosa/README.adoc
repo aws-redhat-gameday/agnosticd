@@ -24,6 +24,7 @@ The following config includes:
 ansible-galaxy collection install community.crypto
 ansible-galaxy collection install ansible.posix
 ansible-galaxy collection install amazon.aws
+ansible-galaxy collection install community.aws
 ```
 
 == Configuration
@@ -33,6 +34,7 @@ In a new file `custom_vars.yml` , configure the following parameters:
 - define a `cloud_provider: ec2`
 - define an email `email: <your-email>`. The email is required as metadata for the generated CloudFormation templates
 - update the default GUID `guid: ...`. It will be used as a suffix for all resources created including the ROSA cluster name. Length cannot exceed 10 characters.
+- define AWS region `aws_region: <aws-regiond-id`
 
 == Secrets
 
